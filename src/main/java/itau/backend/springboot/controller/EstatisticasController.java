@@ -1,0 +1,27 @@
+package itau.backend.springboot.controller;
+
+import itau.backend.springboot.DTO.EstatisticasDTO;
+import itau.backend.springboot.service.TransacaoService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.DoubleSummaryStatistics;
+
+@RestController
+@RequestMapping("/estatistica")
+public class EstatisticasController {
+
+    private final TransacaoService transacaoService;
+
+    public EstatisticasController(TransacaoService transacaoService){
+        this.transacaoService = transacaoService;
+    }
+
+    @GetMapping
+    public ResponseEntity<EstatisticasDTO> getEstatisticas() {
+        DoubleSummaryStatistics estatisticas = transacaoService.getEstatisticas();
+        return ResponseEntity.ok(new EstatisticasDTO(estatisticas));
+    }
+}
