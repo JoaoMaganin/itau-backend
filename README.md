@@ -1,5 +1,6 @@
 # Desafio Itaú Backend
 Este projeto consiste em uma API RESTful desenvolvida em Java, utilizando o framework Spring Boot. Ele foi criado para resolver um desafio de programação proposto para uma vaga de backend no Itaú, focado no processamento e análise de transações financeiras.
+<br>Link do repositório referência: https://github.com/feltex/desafio-itau-backend
 
 # Funcionalidades
 A API oferece os seguintes endpoints para gerenciar transações e obter estatísticas em tempo real:
