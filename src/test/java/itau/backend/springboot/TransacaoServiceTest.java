@@ -9,6 +9,7 @@ import java.time.OffsetDateTime;
 import java.util.DoubleSummaryStatistics;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TransacaoServiceTest {
 
@@ -39,6 +40,26 @@ public class TransacaoServiceTest {
         DoubleSummaryStatistics stats = transacaoService.getEstatisticas();
         assertEquals(2, stats.getCount());
         assertEquals(30.00, stats.getSum(), 0.001);
+    }
+
+    @Test
+    void naoAdicionaTransacaoComValorNegativoOuZero() {
+        // Cenário: Tentativa de adicionar uma transação com valor menor que zero.
+        // Esperado: O serviço deve rejeitar a transação.
+        TransacaoModel transacao = new TransacaoModel(-10.00, OffsetDateTime.now());
+
+        assertThrows(Exception.class, () -> transacaoService.addTransacao(transacao));
+        assertEquals(0, transacaoService.getEstatisticas().getCount(), "Nenhuma transação deveria ter sido adicionada.");
+    }
+
+    @Test
+    void naoAdicionaTransacaoComDataFutura() {
+        // Cenário: Tentativa de adicionar uma transação com data/hora no futuro.
+        // Esperado: O serviço deve rejeitar a transação.
+        TransacaoModel transacao = new TransacaoModel(50.00, OffsetDateTime.now().plusHours(1)); // 1 hora no futuro
+
+        assertEquals(0, transacaoService.getEstatisticas().getCount(), "Nenhuma transação deveria ter sido adicionada.");
+        assertThrows(Exception.class, () -> transacaoService.addTransacao(transacao));
     }
 
     // --- Testes para limpaTransacoes ---

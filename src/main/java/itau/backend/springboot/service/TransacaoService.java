@@ -15,6 +15,13 @@ public class TransacaoService {
     private final Queue<TransacaoModel> transacoes = new ConcurrentLinkedQueue<>();
 
     public void addTransacao(TransacaoModel transacao) {
+        if(transacao.getValor() <= 0) {
+            throw new IllegalArgumentException("O valor da transação deve ser maior que zero.");
+        }
+
+        if(transacao.getDataHora().isAfter(OffsetDateTime.now())) {
+            throw new IllegalArgumentException("A transação não pode ser no futuro.");
+        }
         transacoes.add(transacao);
     }
 
