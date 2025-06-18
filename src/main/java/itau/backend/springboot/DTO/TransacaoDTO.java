@@ -14,6 +14,11 @@ public class TransacaoDTO {
     @NotNull
     private OffsetDateTime dataHora;
 
+    public TransacaoDTO(double valor, OffsetDateTime dataHora) {
+        this.valor = valor;
+        this.dataHora = dataHora;
+    }
+
     public double getValor() {
         return valor;
     }
