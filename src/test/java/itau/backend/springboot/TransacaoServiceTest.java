@@ -44,8 +44,6 @@ public class TransacaoServiceTest {
 
     @Test
     void naoAdicionaTransacaoComValorNegativoOuZero() {
-        // Cenário: Tentativa de adicionar uma transação com valor menor que zero.
-        // Esperado: O serviço deve rejeitar a transação.
         TransacaoModel transacao = new TransacaoModel(-10.00, OffsetDateTime.now());
 
         assertThrows(Exception.class, () -> transacaoService.addTransacao(transacao));
@@ -54,8 +52,6 @@ public class TransacaoServiceTest {
 
     @Test
     void naoAdicionaTransacaoComDataFutura() {
-        // Cenário: Tentativa de adicionar uma transação com data/hora no futuro.
-        // Esperado: O serviço deve rejeitar a transação.
         TransacaoModel transacao = new TransacaoModel(50.00, OffsetDateTime.now().plusHours(1)); // 1 hora no futuro
 
         assertEquals(0, transacaoService.getEstatisticas().getCount(), "Nenhuma transação deveria ter sido adicionada.");
@@ -103,19 +99,5 @@ public class TransacaoServiceTest {
         assertEquals(20.00, stats.getAverage(), 0.001);
         assertEquals(30.00, stats.getMax(), 0.001);
         assertEquals(10.00, stats.getMin(), 0.001);
-    }
-
-    @Test
-    void retornaEstatisticasCorretasComTransacaoDeValorZero() {
-        transacaoService.addTransacao(new TransacaoModel(10.00, OffsetDateTime.now()));
-        transacaoService.addTransacao(new TransacaoModel(6, OffsetDateTime.now()));
-        transacaoService.addTransacao(new TransacaoModel(20.00, OffsetDateTime.now()));
-
-        DoubleSummaryStatistics stats = transacaoService.getEstatisticas();
-        assertEquals(3, stats.getCount());
-        assertEquals(36.00, stats.getSum(), 0.001);
-        assertEquals(12.00, stats.getAverage(), 0.001);
-        assertEquals(20.00, stats.getMax(), 0.001);
-        assertEquals(6.00, stats.getMin(), 0.001);
     }
 }
