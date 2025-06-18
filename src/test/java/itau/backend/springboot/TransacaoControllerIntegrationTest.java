@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import itau.backend.springboot.DTO.TransacaoDTO;
+import itau.backend.springboot.model.TransacaoModel;
 import itau.backend.springboot.service.TransacaoService;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +20,7 @@ import java.time.OffsetDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -88,6 +90,30 @@ public class TransacaoControllerIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(invalidRequest)))
                 .andExpect(status().isUnprocessableEntity());
+
+        assertEquals(0, transacaoService.getEstatisticas().getCount());
+    }
+
+    // --- Testes para DELETE /transacao ---
+
+    @Test
+    void retornar200AoLimparTransacoes() throws Exception {
+        transacaoService.addTransacao(new TransacaoModel(10.00, OffsetDateTime.now()));
+        transacaoService.addTransacao(new TransacaoModel(20.00, OffsetDateTime.now()));
+        assertEquals(2, transacaoService.getEstatisticas().getCount()); // Confirma que foram adicionadas
+
+        mockMvc.perform(delete("/transacao"))
+                .andExpect(status().isOk()); // Espera status 200 OK
+
+        assertEquals(0, transacaoService.getEstatisticas().getCount());
+    }
+
+    @Test
+    void retornar200AoLimparTransacoesVazias() throws Exception {
+        // @BeforeEach garante que a fila já começa vazia
+
+        mockMvc.perform(delete("/transacao"))
+                .andExpect(status().isOk()); // Espera status 200 OK
 
         assertEquals(0, transacaoService.getEstatisticas().getCount());
     }
