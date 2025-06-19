@@ -2,11 +2,12 @@ package itau.backend.springboot.controller;
 
 import itau.backend.springboot.DTO.EstatisticasDTO;
 import itau.backend.springboot.service.TransacaoService;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.apache.logging.log4j.Logger;
 import java.util.DoubleSummaryStatistics;
 
 @RestController
@@ -14,6 +15,7 @@ import java.util.DoubleSummaryStatistics;
 public class EstatisticasController {
 
     private final TransacaoService transacaoService;
+    private Logger log;
 
     public EstatisticasController(TransacaoService transacaoService){
         this.transacaoService = transacaoService;
@@ -21,6 +23,7 @@ public class EstatisticasController {
 
     @GetMapping
     public ResponseEntity<EstatisticasDTO> getEstatisticas() {
+        log.info("Requisição GET recebido de /estatistica...");
         DoubleSummaryStatistics estatisticas = transacaoService.getEstatisticas();
         return ResponseEntity.ok(new EstatisticasDTO(estatisticas));
     }

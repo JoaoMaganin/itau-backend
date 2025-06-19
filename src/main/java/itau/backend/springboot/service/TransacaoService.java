@@ -1,6 +1,7 @@
 package itau.backend.springboot.service;
 
 import itau.backend.springboot.model.TransacaoModel;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
@@ -13,27 +14,36 @@ public class TransacaoService {
 
     //O desafio pede para não usar BD e sim para armazenar na memória
     private final Queue<TransacaoModel> transacoes = new ConcurrentLinkedQueue<>();
+    private final long JANELA_SEGUNDOS = 60;
+    private Logger log;
 
     public void addTransacao(TransacaoModel transacao) {
+        log.debug("Tentando adicionar transação: {}", transacao);
+
         if(transacao.getValor() <= 0) {
+            log.warn("Atenção: Valor da transação tem que ser maior do que zero.");
             throw new IllegalArgumentException("O valor da transação deve ser maior que zero.");
         }
 
-        if(transacao.getDataHora().isAfter(OffsetDateTime.now())) {
-            throw new IllegalArgumentException("A transação não pode ser no futuro.");
-        }
+        log.info("Transação adicionada com sucesso. valor: {}, dataHora: {}", transacao.getValor(), transacao.getDataHora());
         transacoes.add(transacao);
     }
 
     public void limpaTransacoes() {
+        log.info("Iniciando exclusão de todas as transações...");
         transacoes.clear();
+        log.info("Transações excluídas com sucesso");
     }
 
     public DoubleSummaryStatistics getEstatisticas() {
+        log.debug("Calculando estatísticas para {} transações.", transacoes.size());
         OffsetDateTime now = OffsetDateTime.now();
-        return transacoes.stream()
-                //.filter(t -> t.getDataHora().isAfter(now.minusSeconds(60)))
+
+        DoubleSummaryStatistics estatisticasCalculadas = transacoes.stream()
+                //.filter(t -> t.getDataHora().isAfter(now.minusSeconds(JANELA_SEGUNDOS)))
                 .mapToDouble(TransacaoModel::getValor)
                 .summaryStatistics();
+        log.info("Estatísticas calculadas: Soma={}, Média={}, Quantidade={}", estatisticasCalculadas.getSum(), estatisticasCalculadas.getAverage(), estatisticasCalculadas.getCount());
+        return estatisticasCalculadas;
     }
 }

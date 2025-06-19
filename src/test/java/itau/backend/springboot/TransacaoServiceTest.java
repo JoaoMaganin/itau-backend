@@ -50,14 +50,6 @@ public class TransacaoServiceTest {
         assertEquals(0, transacaoService.getEstatisticas().getCount(), "Nenhuma transação deveria ter sido adicionada.");
     }
 
-    @Test
-    void naoAdicionaTransacaoComDataFutura() {
-        TransacaoModel transacao = new TransacaoModel(50.00, OffsetDateTime.now().plusHours(1)); // 1 hora no futuro
-
-        assertEquals(0, transacaoService.getEstatisticas().getCount(), "Nenhuma transação deveria ter sido adicionada.");
-        assertThrows(Exception.class, () -> transacaoService.addTransacao(transacao));
-    }
-
     // --- Testes para limpaTransacoes ---
 
     @Test

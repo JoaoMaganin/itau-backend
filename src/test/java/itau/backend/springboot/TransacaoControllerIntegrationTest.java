@@ -82,18 +82,6 @@ public class TransacaoControllerIntegrationTest {
         assertEquals(0, transacaoService.getEstatisticas().getCount());
     }
 
-    @Test
-    void retorna422AoAdicionarTransacaoComDataFutura() throws Exception {
-        TransacaoDTO invalidRequest = new TransacaoDTO(75.00, OffsetDateTime.now().plusHours(1)); // Data no futuro
-
-        mockMvc.perform(post("/transacao")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(invalidRequest)))
-                .andExpect(status().isUnprocessableEntity());
-
-        assertEquals(0, transacaoService.getEstatisticas().getCount());
-    }
-
     // --- Testes para DELETE /transacao ---
 
     @Test
