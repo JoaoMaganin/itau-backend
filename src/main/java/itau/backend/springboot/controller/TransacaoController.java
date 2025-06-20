@@ -4,17 +4,17 @@ import itau.backend.springboot.DTO.TransacaoDTO;
 import itau.backend.springboot.model.TransacaoModel;
 import itau.backend.springboot.service.TransacaoService;
 import jakarta.validation.Valid;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.apache.logging.log4j.Logger;
 
 @RestController
 @RequestMapping("/transacao")
 public class TransacaoController {
 
     private final TransacaoService transacaoService;
-    private Logger log;
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(TransacaoController.class);
 
     public TransacaoController(TransacaoService transacaoService) {
         this.transacaoService = transacaoService;
