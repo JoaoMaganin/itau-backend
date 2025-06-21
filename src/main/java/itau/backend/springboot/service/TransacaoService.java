@@ -3,6 +3,7 @@ package itau.backend.springboot.service;
 import itau.backend.springboot.model.TransacaoModel;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StopWatch;
 
 import java.time.OffsetDateTime;
 import java.util.DoubleSummaryStatistics;
@@ -38,12 +39,16 @@ public class TransacaoService {
     public DoubleSummaryStatistics getEstatisticas() {
         log.debug("Calculando estatísticas para {} transações.", transacoes.size());
         OffsetDateTime now = OffsetDateTime.now();
+        StopWatch stopWatch = new StopWatch(); // Cria um novo StopWatch
+        stopWatch.start("calcularEstatisticas"); // Inicia o timer com um nome de tarefa
 
         DoubleSummaryStatistics estatisticasCalculadas = transacoes.stream()
                 //.filter(t -> t.getDataHora().isAfter(now.minusSeconds(JANELA_SEGUNDOS)))
                 .mapToDouble(TransacaoModel::getValor)
                 .summaryStatistics();
-        log.info("Estatísticas calculadas: Soma={}, Média={}, Quantidade={}", estatisticasCalculadas.getSum(), estatisticasCalculadas.getAverage(), estatisticasCalculadas.getCount());
+
+        stopWatch.stop(); // Para o timer
+        log.info("Estatísticas calculadas: Soma={}, Média={}, Quantidade={}, Tempo para calcular={}ms", estatisticasCalculadas.getSum(), estatisticasCalculadas.getAverage(), estatisticasCalculadas.getCount(), stopWatch.getTotalTimeMillis());
         return estatisticasCalculadas;
     }
 }
