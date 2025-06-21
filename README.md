@@ -19,8 +19,9 @@ Este projeto demonstra proficiência e experiência com as seguintes tecnologias
 * Controle de Versão (Git/GitHub): Gerenciamento colaborativo do código-fonte, utilizando boas práticas de Git para versionamento e controle de branches.
 * Implementação de testes unitários e testes de integração: Testes que estressam as funcionalidades do sistemas e também como essas funcionalidades se comunicam entre si.
 * Containerização do sistema: Fornecimento de imagem Docker para facilitar a implantação e execução do sistema em containers.
-* Logs: Sistema de hierarquia de logs para melhor entendimento do fluxo da aplicação
-* Saúde da aplicação: Verificação da saúde da memória da aplicação
+* Logs: Sistema de hierarquia de logs para melhor entendimento do fluxo da aplicação.
+* Saúde da aplicação: Verificação da saúde da memória da aplicação.
+* Perfomance: Medição de tempo do método que puxa as estatísticas das transações.
 
 # Desafios e Aprendizados
 Um dos principais desafios foi projetar uma solução que pudesse calcular estatísticas precisas e em tempo real sobre um fluxo contínuo de transações. Como no desafio não era permitido usar nenhum BD ou cache, a solução foi usar um tipo de lista que nunca tinha usado antes chamado ConcurrentLinkedQueue
