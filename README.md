@@ -9,6 +9,9 @@ A API oferece os seguintes endpoints para gerenciar transações e obter estatí
 * `DELETE /transacao`: Limpa todas as transações armazenadas em memória.
 * `GET /estatistica`: Retorna estatísticas agregadas sobre as transações recebidas, como soma total, média, valor máximo, valor mínimo e contagem.
 
+Documentação Interativa (Swagger UI)
+* `http://localhost:8080/swagger-ui.html`: Com a aplicação rodando, acesse este endereço para acessar a documentação interativa da API no navegador
+
 # Tecnologias Utilizadas
 Este projeto demonstra proficiência e experiência com as seguintes tecnologias e conceitos:
 
@@ -24,6 +27,52 @@ Este projeto demonstra proficiência e experiência com as seguintes tecnologias
 * Perfomance: Medição de tempo do método que puxa as estatísticas das transações.
 * Documentação: Documentação da API com Swagger no endereço `swagger-ui/index.html`
 
-# Desafios e Aprendizados
-Um dos principais desafios foi projetar uma solução que pudesse calcular estatísticas precisas e em tempo real sobre um fluxo contínuo de transações. Como no desafio não era permitido usar nenhum BD ou cache, a solução foi usar um tipo de lista que nunca tinha usado antes chamado ConcurrentLinkedQueue
-que oferece bom desempenho em cenários de inserção e remoção frequentes, especialmente quando a taxa de operações de inserção e remoção é alta.
+# Pré-requisitos
+Antes de construir e executar a aplicação, certifique-se de ter as seguintes ferramentas instaladas em sua máquina:
+* Java Development Kit (JDK) 17 ou superior: A aplicação foi desenvolvida e testada com JDK 17.
+  * Verifique sua versão: java -version
+* Apache Maven 3.6.x ou superior: Utilizado para gerenciar dependências e construir o projeto.
+  * Verifique sua versão: mvn -v
+* Docker Desktop (Opcional, mas Recomendado): Para construir e executar a aplicação em um ambiente containerizado.
+  * Verifique se o Docker está rodando: docker --version
+* Git: Para clonar o repositório.
+  * Verifique sua versão: git --version
+
+# Como construir e executar
+1. Clone o repositório no GitLab
+```
+git clone https://github.com/feltex/desafio-itau-backend.git
+cd desafio-itau-backend
+```
+2. Opção A: Executar localmente
+  Na pasta raiz do projeto rode:
+  ```
+  mvn clean package -DskipTests
+  ```
+  Após isso, a aplicação pode ser executada rodando SpringbootApplication via editor de código, ou executando no terminal:
+  ```
+  java -jar target/springboot-0.0.1-SNAPSHOT.jar
+  ```
+2. Opção B: Executar com Docker
+  Esta opção empacota sua aplicação em uma imagem Docker e a executa como um contêiner, garantindo um ambiente isolado e portátil.<br/>
+  1 - Construir o projeto(Gerar o .jar)
+  Na pasta raiz do projeto rode:
+  ```
+  mvn clean package -DskipTests
+  ```
+  2 - Construir a Imagem Docker:
+  Ainda na raiz do projeto (onde o Dockerfile está localizado), construa a imagem Docker. Um Dockerfile de exemplo é fornecido na raiz do projeto.
+  OBS: Lembre-se de iniciar o docker.
+  ```
+  docker build -t springboot .
+  ```
+  Depois que a imagem for construída, você pode rodar sua aplicação dentro de um contêiner:
+  ```
+  docker run -p 8080:8080 springboot
+  ```
+
+# Rodar os Testes
+Para executar os testes unitários e de integração do projeto, navegue até o diretório raiz do projeto e execute:
+```
+mvn clean test
+```
