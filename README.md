@@ -22,6 +22,7 @@ Este projeto demonstra proficiência e experiência com as seguintes tecnologias
 * Logs: Sistema de hierarquia de logs para melhor entendimento do fluxo da aplicação.
 * Saúde da aplicação: Verificação da saúde da memória da aplicação.
 * Perfomance: Medição de tempo do método que puxa as estatísticas das transações.
+* Documentação: Documentação da API com Swagger em http://localhost:8080/swagger-ui/index.html
 
 # Desafios e Aprendizados
 Um dos principais desafios foi projetar uma solução que pudesse calcular estatísticas precisas e em tempo real sobre um fluxo contínuo de transações. Como no desafio não era permitido usar nenhum BD ou cache, a solução foi usar um tipo de lista que nunca tinha usado antes chamado ConcurrentLinkedQueue
